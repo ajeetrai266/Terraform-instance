@@ -91,6 +91,6 @@ resource "aws_instance" "node-1" {
 
 
 resource "local_file" "f1" {
-  content = "[Master]\n${aws_instance.k8s.public_ip}\n\n[Worker]\n${join("\n", azurerm_linux_virtual_machine.os1.*.public_ip_address)}"
+  content = "[Master]\n${aws_instance.node-1.public_ip}\n\n[Worker]\n${join("\n", azurerm_linux_virtual_machine.os1.*.public_ip_address)}"
   filename = "inventory"
 }
