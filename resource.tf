@@ -77,14 +77,14 @@ resource "azurerm_linux_virtual_machine" "os1" {
 
 resource "aws_key_pair" "tfkey" {
   key_name   = "tf-key"
-  public_key = tls_private_key.k8s_ssh.public_key_openssh
+  public_key = tls_private_key.tf-key.public_key_openssh
 }
 
 resource "aws_instance" "node-1" {
   ami           = "ami-010aff33ed5991201"
   instance_type = "t2.micro"
   security_groups = var.sg
-  key_name = var.key
+  key_name = aws_key_pair.tfkey.key_name
 
   tags = {
     Name = "Node TF"
