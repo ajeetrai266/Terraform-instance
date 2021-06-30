@@ -66,8 +66,8 @@ resource "azurerm_linux_virtual_machine" "os1" {
   source_image_reference {
      publisher = "RedHat"
        offer     = "RHEL"
-       sku       = "7.6"
-       version   = "7.6.2019052206"
+       sku       = "8.2"
+       version   = "latest"
   }
 
   admin_ssh_key {
