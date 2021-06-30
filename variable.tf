@@ -1,5 +1,5 @@
 variable "key" {
-    default = "key-1"
+    default = "tf-key"
 }
 
 variable "sg" {
