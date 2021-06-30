@@ -52,7 +52,7 @@ resource "azurerm_linux_virtual_machine" "os1" {
   size                = "Standard_DS1_v2"
   network_interface_ids = [ azurerm_network_interface.nwI.id ]
 
-  admin_username = "ajeet"
+  admin_username = "ec2-user"
 
   os_disk {
     name = "os1Disk"
