@@ -7,8 +7,9 @@ resource "azurerm_resource_group" "rsgrp" {
     }
 }
 
-resource "azurerm_public_ip" "pubip" {
-  name                = "os1-ip"
+resource "azurerm_public_ip" "pubip" { 
+  count = var.n
+  name                = "os${count.index}-ip"
   resource_group_name = azurerm_resource_group.rsgrp.name
   location            = azurerm_resource_group.rsgrp.location
   allocation_method   = "Dynamic"
@@ -33,7 +34,8 @@ resource "azurerm_subnet" "subn1" {
 }
 
 resource "azurerm_network_interface" "nwI" {
-  name                = "TFnwI"
+  count = var.n
+  name                = "TFnwInterface-${count.index}"
   location            = azurerm_resource_group.rsgrp.location
   resource_group_name = azurerm_resource_group.rsgrp.name
 
@@ -41,21 +43,22 @@ resource "azurerm_network_interface" "nwI" {
     name                          = "internal"
     subnet_id = azurerm_subnet.subn1.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id = azurerm_public_ip.pubip.id
+    public_ip_address_id = "${element(azurerm_public_ip.pubip.*.id, count.index)}
   }
 }
 
-resource "azurerm_linux_virtual_machine" "os1" {
-  name                = "TFos1"
+resource "azurerm_linux_virtual_machine" "os1" { 
+  count = var.n
+  name                = "TFos-${count.index}"
   location            = azurerm_resource_group.rsgrp.location
   resource_group_name = azurerm_resource_group.rsgrp.name
   size                = "Standard_DS1_v2"
-  network_interface_ids = [ azurerm_network_interface.nwI.id ]
+  network_interface_ids = ["${element(azurerm_network_interface.nwI.*.id, count.index)}"]
 
   admin_username = "ec2-user"
 
   os_disk {
-    name = "os1Disk"
+    name = "os${count.index}Disk"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
