@@ -43,7 +43,7 @@ resource "azurerm_network_interface" "nwI" {
     name                          = "internal"
     subnet_id = azurerm_subnet.subn1.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id = "${element(azurerm_public_ip.pubip.*.id, count.index)}
+    public_ip_address_id = "${element(azurerm_public_ip.pubip.*.id, count.index)}"
   }
 }
 
